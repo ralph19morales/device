@@ -1,0 +1,38 @@
+server:
+  port: ${SERVER_PORT:80}
+
+#Spring
+spring:
+  application:
+    name: device
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+    default-property-inclusion: non_null
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true
+  datasource:
+    db-host: ${DB_HOST:localhost}
+    db-name: ${DB_NAME:device_app}
+    url: 'jdbc:mysql://${spring.datasource.db-host}/${spring.datasource.db-name}?serverTimezone=UTC&useLegacyDatetimeCode=false&useSSL=false'
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:12345}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: ${DB_CONNECTIONS_MIN:10}
+      maximum-pool-size: ${DB_CONNECTIONS_MAX:50}
+      idle-timeout: 300000
+      max-lifetime: 1200000
+  sql:
+    init:
+      mode: always
+#Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
